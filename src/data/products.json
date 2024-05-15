@@ -1,0 +1,24 @@
+[
+  {
+    "id": "vf2gb47q-6h0r-894d-bf0b-hye59g7i29qn",
+    "title": "Aaa",
+    "description": "Aaa",
+    "price": "10",
+    "thumbnail": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/aa84b513-18f3-40dd-a37a-2d1fd3b6f68b/deoczcy-4bd51dbf-1e21-4e0f-a30a-0d49e242a7e6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2FhODRiNTEzLTE4ZjMtNDBkZC1hMzdhLTJkMWZkM2I2ZjY4YlwvZGVvY3pjeS00YmQ1MWRiZi0xZTIxLTRlMGYtYTMwYS0wZDQ5ZTI0MmE3ZTYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.wIq8hl5e5cnlCA0kjCnTRSNYXk1qtxUAvGeycoATdJo",
+    "code": "748h",
+    "stock": "100",
+    "status": true,
+    "category": "Asd"
+  },
+  {
+    "id": "hye59g7i-4da2-894d-4da2-vf2gb47qef74",
+    "title": "Bbb",
+    "description": "Bbb",
+    "price": "20",
+    "thumbnail": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/aa84b513-18f3-40dd-a37a-2d1fd3b6f68b/deoczcy-4bd51dbf-1e21-4e0f-a30a-0d49e242a7e6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2FhODRiNTEzLTE4ZjMtNDBkZC1hMzdhLTJkMWZkM2I2ZjY4YlwvZGVvY3pjeS00YmQ1MWRiZi0xZTIxLTRlMGYtYTMwYS0wZDQ5ZTI0MmE3ZTYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.wIq8hl5e5cnlCA0kjCnTRSNYXk1qtxUAvGeycoATdJo",
+    "code": "657",
+    "stock": "200",
+    "status": "true",
+    "category": "Asd1"
+  }
+]

@@ -1,123 +1,45 @@
-const express = require('express');
-const fs = require('fs').promises;
-const ProductManager = require('./ProductManager');
-const CartManager = require('./CartManager');
+import express from 'express';
+import path from 'path';
+import __dirname from './utils.js';
+import { engine } from 'express-handlebars';
+import { Server } from 'socket.io';
+import connectDB from './connection/MongoDB.js';
+import { router as productRouter } from './routes/products-router.js';
+import { router as cartRouter } from './routes/cart-router.js';
+import { router as vistasRouter } from './routes/vistas.router.js';
+import socketChat from './socket/socketChat.js';
+import socketProducts from './socket/socketProducts.js';
+import dotenv from 'dotenv';
+dotenv.config();
+const port = 8080;
 
 const app = express();
-const productManager = new ProductManager('productos.json');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Rutas para gestionar productos
-app.get('/api/products', async (req, res) => {
-  try {
-    const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
-    const products = await productManager.getProducts(limit);
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
+connectDB();
+
+app.engine('handlebars', engine());
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, '/views'));
+
+app.use(express.static(path.join(__dirname, '/public')));
+
+app.use('/api/products', productRouter);
+app.use('/api/carts', cartRouter);
+app.use('/', vistasRouter);
+app.use('/', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.status(200).send('Correcto');
 });
 
-app.get('/api/products/:pid', async (req, res) => {
-  try {
-    const productId = parseInt(req.params.pid);
-    const product = await productManager.getProductById(productId);
-    if (product) {
-      res.json(product);
-    } else {
-      res.status(404).json({ error: 'Product not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+const serverHTTP = app.listen(port, () =>
+  console.log(`Server encendido en http://localhost:${port}`)
+);
+serverHTTP.on('error', (err) => console.log(err));
 
-app.post('/api/products', async (req, res) => {
-  try {
-    const newProduct = req.body;
-    const addedProduct = await productManager.addProduct(newProduct);
-    res.status(201).json(addedProduct);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+const socketServer = new Server(serverHTTP);
 
-app.put('/api/products/:pid', async (req, res) => {
-  try {
-    const productId = parseInt(req.params.pid);
-    const updatedProduct = req.body;
-    const result = await productManager.updateProduct(
-      productId,
-      updatedProduct
-    );
-    if (result) {
-      res.json(result);
-    } else {
-      res.status(404).json({ error: 'Product not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.delete('/api/products/:pid', async (req, res) => {
-  try {
-    const productId = parseInt(req.params.pid);
-    const result = await productManager.deleteProduct(productId);
-    if (result) {
-      res.json({ message: 'Product deleted successfully' });
-    } else {
-      res.status(404).json({ error: 'Product not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Rutas para gestionar carritos de compra
-const cartManager = new CartManager('carrito.json');
-
-app.post('/api/carts', async (req, res) => {
-  try {
-    const newCart = await cartManager.createCart();
-    res.status(201).json(newCart);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.get('/api/carts/:cid', async (req, res) => {
-  try {
-    const cartId = parseInt(req.params.cid);
-    const cart = await cartManager.getCart(cartId);
-    if (cart) {
-      res.json(cart);
-    } else {
-      res.status(404).json({ error: 'Cart not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.post('/api/carts/:cid/product/:pid', async (req, res) => {
-  try {
-    const cartId = parseInt(req.params.cid);
-    const productId = parseInt(req.params.pid);
-    const quantity = parseInt(req.body.quantity);
-    const addedProduct = await cartManager.addProductToCart(
-      cartId,
-      productId,
-      quantity
-    );
-    res.status(201).json(addedProduct);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-const PORT = 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+socketProducts(socketServer);
+socketChat(socketServer);

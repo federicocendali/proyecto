@@ -1,0 +1,49 @@
+<a class='mx-5 my-5 btn btn-success' href='/'>Inicio</a>
+<div class='container col-12 border border-primary'>
+  <h1 class='text-center mb-4 fs-1 font-monospace'>Carrito</h1>
+  <div class='row row-cols-md-4 row-cols-md-5'>
+    {{#each products}}
+      <div class='col mb-4'>
+        <div class='card h-100 bg-light'>
+          <div class='card-header bg-primary text-white'>
+            <i class='bi bi-info-circle'>ID: </i>{{this.product.id}}
+          </div>
+          <div class='card-body'>
+            <h5
+              class='card-title text-black fs-4 font-monospace'
+            >{{this.product.title}}</h5>
+            <ul class='list-unstyled'>
+              <hr />
+              <li><i class='bi bi-file-text'>
+                  Descripcion:
+                  {{this.product.description}}</i></li>
+              <hr />
+              <li><i>Precio: $ {{this.product.price}}</i></li>
+              <hr />
+              <li><i class='bi bi-tag'></i>Codigo: {{this.product.code}}</li>
+              <hr />
+              <li><i class='bi bi-grid'></i>
+                Categoria:
+                {{this.product.category}}</li>
+              <hr />
+              <li><i class='bi bi-check-circle'>
+                  Estado:
+                  {{this.product.status}}</i></li>
+              <hr />
+              <li><i class='bi bi-box'></i>Stock: {{this.product.stock}}</li>
+              <hr />
+              <li>
+                <img
+                  src='{{this.product.thumbnail}}'
+                  alt='{{this.product.title}}'
+                  class='img-fluid mt-2'
+                />
+              </li>
+            </ul>
+          </div>
+          <li>Cantidad: {{this.quantity}}</li>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
