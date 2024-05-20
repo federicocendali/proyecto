@@ -1,12 +1,36 @@
-<h2>Registro:</h2>
+<div class="d-flex justify-content-evenly">
 {{>menu}}
-<hr>
+</div>
+ {{#if error}}
+        <div style="font-weight: bolder; color: red;">{{error}}</div>
+    {{/if}}
 <form action="/api/sessions/register" method="post">
-    <input type="text" name="nombre" placeholder="nombre">
-    <input type="email" name="email" placeholder="correo electrónico">
-    <input type="password" name="password" placeholder="contraseña">
-    <input type="text" name="web" value="web" hidden>
-    <br><br>
-    <input type="submit" value="Registrar">
+<div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form>
+                     <div class="form-group m-3" >
+                        <label for="email" class="fs-4">Nombre</label>
+                       <input type="text" name="nombre" class="form-control" placeholder="nombre">
+                    </div>
+                    <div class="form-group m-3" >
+                        <label for="email" class="fs-4">Correo</label>
+                        <input type="email" name="email" class="form-control" placeholder="correo electrónico">
+                    </div>
+                    <div class="form-group  m-3">
+                        <label for="password" class="fs-4">Contraseña</label>
+                        <input type="password" name="password" class="form-control" placeholder="contraseña">
+                    </div>
+                    <input type="text" name="web" value="web" hidden>
+
+
+                    <div class="d-flex justify-content-around m-5">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </form>
 <br><br>

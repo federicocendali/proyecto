@@ -2,7 +2,6 @@ import { cartsModel } from '../dao/models/carts.model.js';
 
 export default class CartManager {
   ID_FIELD = '_id';
-
   async createCart() {
     try {
       let carrito = await cartsModel.create({ products: [] });
@@ -25,7 +24,6 @@ export default class CartManager {
   async getOneBy(filtro = {}) {
     return await cartsModel.findOne(filtro).lean();
   }
-
   async deleteCartById(id) {
     try {
       return await cartsModel.findByIdAndDelete({ [this.ID_FIELD]: id });
@@ -37,11 +35,9 @@ export default class CartManager {
   async update(id, carrito) {
     return await cartsModel.updateOne({ _id: id }, carrito);
   }
-
   async getOneByPopulate(filtro = {}) {
     return await cartsModel.findOne(filtro).populate('products.product').lean();
   }
-
   async deleteProductFromCart(id, productId) {
     try {
       const cart = await cartsModel.findById(id);
@@ -53,14 +49,12 @@ export default class CartManager {
       return false;
     }
   }
-
   async decreaseProductQuantity(cid, pid) {
     try {
       const cart = await cartsModel.findById(cid);
       const productIndex = cart.products.findIndex(
         (product) => product.product == pid
       );
-
       if (productIndex !== -1) {
         if (cart.products[productIndex].quantity > 1) {
           cart.products[productIndex].quantity -= 1;
@@ -70,7 +64,6 @@ export default class CartManager {
           await cart.save();
         }
       }
-
       return true;
     } catch (error) {
       console.log(error);

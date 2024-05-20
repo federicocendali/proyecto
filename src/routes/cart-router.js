@@ -2,6 +2,7 @@ import { Router } from 'express';
 import CartManager from '../dao/cartManagerMONGO.js';
 import ProductManager from '../dao/productManagerMONGO.js';
 import { isValidObjectId } from 'mongoose';
+import { auth } from '../middleware/auth.js';
 
 export const router = Router();
 
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
     res.json(response);
   } catch (error) {
     console.log(error);
-    res.send('Error al crear el carrito');
+    res.send('Error al intentar crear el carrito');
   }
 });
 
@@ -36,7 +37,7 @@ router.get('/:cid', async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     return res.status(200).json({ carrito });
   } catch (error) {
-    res.status(500).send('Error trying to get cart');
+    res.status(500).send('Error en el servidor');
   }
 });
 
@@ -45,7 +46,7 @@ router.post('/', async (req, res) => {
     const response = await cartManager.createCart();
     res.json(response);
   } catch (error) {
-    res.send('Error trying to create cart');
+    res.send('Error en el servidor');
   }
 });
 
@@ -55,19 +56,16 @@ router.post('/:cid/products/:pid', async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     return res.status(400).json({ error: `Ingrese cid / pid válidos` });
   }
-
   let carrito = await cartManager.getOneBy({ _id: cid });
   if (!carrito) {
     res.setHeader('Content-Type', 'application/json');
     return res.status(400).json({ error: `Carrito inexistente: id ${cid}` });
   }
-
   let product = await productManager.getOneBy({ _id: pid });
   if (!product) {
     res.setHeader('Content-Type', 'application/json');
     return res.status(400).json({ error: `No existe producto con id ${pid}` });
   }
-
   let indiceProducto = carrito.products.findIndex((p) => p.product == pid);
   if (indiceProducto === -1) {
     carrito.products.push({
@@ -77,7 +75,6 @@ router.post('/:cid/products/:pid', async (req, res) => {
   } else {
     carrito.products[indiceProducto].quantity++;
   }
-
   console.log(carrito, ' console de carrito');
   let resultado = await cartManager.update(cid, carrito);
   if (resultado.modifiedCount > 0) {
@@ -86,7 +83,7 @@ router.post('/:cid/products/:pid', async (req, res) => {
   } else {
     res.setHeader('Content-Type', 'application/json');
     return res.status(500).json({
-      error: `Error interno del servidor`,
+      error: `Error en el servidor`,
       detalle: `No se pudo realizar la actualizacion`,
     });
   }
@@ -100,9 +97,8 @@ router.put('/:cid/products/:pid', async (req, res) => {
   }
   try {
     await cartManager.decreaseProductQuantity(cid, pid);
-
     res.json({
-      payload: `Se redujo la cantidad del producto ID ${pid} en el carrito ID ${cid}`,
+      payload: `Se redujo la cantidad del producto con ID: ${pid} en el carrito con ID: ${cid}`,
     });
   } catch (error) {
     return res.status(500).json({ error: `${error.message}` });
@@ -116,11 +112,9 @@ router.delete('/:cid', async (req, res) => {
       error: `Enter a valid MongoDB id`,
     });
   }
-
   if (!cid) {
     return res.status(300).json({ error: 'Check unfilled fields' });
   }
-
   try {
     await cartManager.deleteCartById(cid);
     res.setHeader('Content-Type', 'application/json');
@@ -150,33 +144,27 @@ router.put('/:cId/products/:pId', async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     return res.status(400).json({ error: `Ingrese cid / pid válidos` });
   }
-
   try {
     let carrito = await cartManager.getOneBy({ _id: cId });
     if (!carrito) {
       res.setHeader('Content-Type', 'application/json');
       return res.status(400).json({ error: `Carrito inexistente: id ${cId}` });
     }
-
     let productIndex = carrito.products.findIndex((p) => p.product == pId);
     if (productIndex === -1) {
       res.setHeader('Content-Type', 'application/json');
       return res
         .status(400)
-        .json({ error: `El producto id ${pId} no está en el carrito` });
+        .json({ error: `El producto con id ${pId} no está en el carrito` });
     }
-
     const { quantity } = req.body;
-
     if (quantity <= 0) {
       res.setHeader('Content-Type', 'application/json');
       return res
         .status(400)
         .json({ error: `La cantidad debe ser mayor que cero` });
     }
-
     carrito.products[productIndex].quantity = quantity;
-
     const resultado = await cartManager.update(cId, carrito);
     if (resultado.modifiedCount > 0) {
       res.setHeader('Content-Type', 'application/json');
@@ -186,7 +174,7 @@ router.put('/:cId/products/:pId', async (req, res) => {
     } else {
       res.setHeader('Content-Type', 'application/json');
       return res.status(500).json({
-        error: `Error interno del servidor`,
+        error: `Error en el servidor`,
         detalle: `No se pudo realizar la actualizacion`,
       });
     }

@@ -1,18 +1,21 @@
 * {
   box-sizing: border-box;
 }
+
 h2 {
-  color: rgb(170, 0, 0);
+  color: red;
 }
 
 .card {
-  background-color: rgb(170, 0, 0);
+  background-color: red;
   border-radius: 10px;
 }
+
 .card:hover {
-  transition: 0.2s;
+  transition: 0.4s;
   transform: scale(1.03);
 }
+
 .container {
   width: 100%;
   background: radial-gradient(
@@ -23,6 +26,7 @@ h2 {
     #324 75%
   );
 }
+
 .containerRealTime {
   background: radial-gradient(
     circle at 70%,

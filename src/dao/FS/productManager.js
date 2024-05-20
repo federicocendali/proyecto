@@ -6,7 +6,6 @@ export class ProductManager {
     this.PATH = './src/data/products.json';
     this.products = [];
   }
-
   addProduct = async ({
     title,
     description,
@@ -18,7 +17,6 @@ export class ProductManager {
     category,
   }) => {
     const id = uuidv4();
-
     let newProduct = {
       id,
       title,
@@ -47,7 +45,6 @@ export class ProductManager {
   getProductById = async (id) => {
     const response = await this.getProducts();
     const product = response.find((product) => product.id === id);
-
     if (product) {
       return product;
     } else {
@@ -64,7 +61,7 @@ export class ProductManager {
       await fs.promises.writeFile(this.PATH, JSON.stringify(products));
       return console.log('Se ha actualizado el producto');
     } else {
-      console.log('No existe');
+      console.log('El Producto no existe');
     }
   };
 

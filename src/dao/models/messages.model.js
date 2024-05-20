@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const collection = 'messages';
-
 const messageSchema = new mongoose.Schema(
   {
     user: String,

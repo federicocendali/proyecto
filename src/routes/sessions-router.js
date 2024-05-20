@@ -1,99 +1,54 @@
 import { Router } from 'express';
-import { UsuariosManagerMongo as UsuariosManager } from '../dao/userManagerMONGO.js';
-import { generaHash } from '../utils.js';
-import CartManager from '../dao/cartManagerMONGO.js';
+import passport from 'passport';
+
 export const router = Router();
 
-const usuariosManager = new UsuariosManager();
-const cartManager = new CartManager();
-router.post('/register', async (req, res) => {
-  let { nombre, email, password } = req.body;
-
-  if (!nombre || !email || !password) {
-    res.setHeader('Content-Type', 'application/json');
-    return res.status(400).json({ error: `Complete nombre, mail y password` });
-  }
-
-  let existe = await usuariosManager.getBy({ email });
-  if (existe) {
-    res.setHeader('Content-Type', 'application/json');
-    return res.status(400).json({ error: `Ya existe ${email}` });
-  }
-
-  password = generaHash(password);
-
-  try {
-    let newCart = await cartManager.createCart();
-    let nuevoUsuario = await usuariosManager.create({
-      nombre,
-      email,
-      password,
-      rol: 'user',
-      cart: newCart._id,
-    });
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({
-      message: 'Registro correcto.',
-      nuevoUsuario,
-    });
-  } catch (error) {
-    console.log(error);
-    res.setHeader('Content-Type', 'application/json');
-    return res.status(500).json({
-      error: `Error interno del servidor`,
-      detalle: `${error.message}`,
-    });
-  }
-});
-
-router.post('/login', async (req, res) => {
-  let { email, password, web } = req.body;
-
-  console.log(req.body);
-  if (!email || !password) {
-    if (web) {
-      return res.redirect(`/login?error=Complete email, y password`);
-    } else {
-      res.setHeader('Content-Type', 'application/json');
-      return res.status(400).json({ error: `Complete mail y password` });
-    }
-  }
-
-  if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-    let nuevoUsuario = await usuariosManager.create({
-      nombre: 'admin',
-      email: 'adminCoder@coder.com',
-      password: generaHash(password),
-      rol: 'admin',
-    });
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({ message: 'Registro correcto.', nuevoUsuario });
-  }
-
-  let usuario = await usuariosManager.getBy({
-    email,
-    password: generaHash(password),
+router.get('/error', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  return res.status(500).json({
+    error: `Error en el servidor`,
+    detalle: `Fallo al autenticar.`,
   });
-  if (!usuario) {
+});
+
+router.post(
+  '/register',
+  passport.authenticate('register', { failureRedirect: 'api/sessions/error' }),
+  async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    return res
+      .status(201)
+      .json({ payload: 'REGISTRO OK', nuevoUsuario: req.user });
+  }
+);
+
+router.post(
+  '/login',
+  passport.authenticate('login', { failureRedirect: '/api/sessions/error' }),
+  async (req, res) => {
+    let { web } = req.body;
+    let usuario = { ...req.user };
+    delete usuario.password;
+    req.session.usuario = usuario;
     if (web) {
-      return res.redirect(`/login?error=Credenciales invalidas`);
+      res.redirect('/');
     } else {
       res.setHeader('Content-Type', 'application/json');
-      return res.status(400).json({ error: `Credenciales invalidas` });
+      return res.status(200).json({ payload: 'Login correcto', usuario });
     }
   }
+);
 
-  usuario = { ...usuario };
-  delete usuario.password;
-  req.session.usuario = usuario;
+router.get('/github', passport.authenticate('github', {}), async () => {});
 
-  if (web) {
-    res.redirect('/');
-  } else {
-    res.setHeader('Content-Type', 'application/json');
-    return res.status(200).json({ payload: 'Login correcto', usuario });
+router.get(
+  '/devolucionGithub',
+  passport.authenticate('github', { failureRedirect: '/api/sessions/error' }),
+  async (req, res) => {
+    req.session.usuario = req.user;
+    return res.redirect('/');
   }
-});
+);
 
 router.get('/logout', (req, res) => {
   req.session.destroy((error) => {
@@ -101,7 +56,7 @@ router.get('/logout', (req, res) => {
       console.error(error);
       res.setHeader('Content-Type', 'application/json');
       return res.status(500).json({
-        error: 'Error interno del servidor',
+        error: 'Error en el servidor',
         detalle: error.message,
       });
     }

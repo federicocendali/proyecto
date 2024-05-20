@@ -8,7 +8,6 @@ export default class ProductManager {
       return err;
     }
   };
-
   getProductsView = async () => {
     try {
       return await productsModel.find().lean();
@@ -16,7 +15,6 @@ export default class ProductManager {
       return err;
     }
   };
-
   getProductById = async (id) => {
     try {
       return await productsModel.findById(id);
@@ -24,15 +22,12 @@ export default class ProductManager {
       return { error: err.message };
     }
   };
-
   async getOneBy(filtro = {}) {
     return await productsModel.findOne(filtro).lean();
   }
-
   async create(product) {
     return await productsModel.create(product);
   }
-
   addProduct = async (product) => {
     try {
       await productsModel.create(product);
@@ -41,7 +36,6 @@ export default class ProductManager {
       return err;
     }
   };
-
   updateProduct = async (id, product) => {
     try {
       return await productsModel.findByIdAndUpdate(id, { $set: product });
@@ -49,7 +43,6 @@ export default class ProductManager {
       return err;
     }
   };
-
   deleteProductById = async (id) => {
     try {
       return await productsModel.deleteOne({ id });
@@ -57,20 +50,16 @@ export default class ProductManager {
       return err;
     }
   };
-
   async getAll() {
     return await productsModel.find().lean();
   }
-
   async getAllPaginate(page = 1) {
     return await productsModel.paginate({}, { limit: 5, page, lean: true });
   }
-
   async getProductsPaginate(filtro, opciones) {
     console.log(opciones);
     let resultado = await productsModel.paginate(filtro, opciones);
     console.log(resultado);
-
     let sortOrder = opciones.sort;
     if (sortOrder == 'asc') {
       return (resultado = resultado.docs.sort(function (a, b) {

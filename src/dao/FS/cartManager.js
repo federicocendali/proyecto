@@ -9,14 +9,10 @@ export class CartManager {
 
   newCart = async () => {
     const id = uuidv4();
-
     let newCart = { id, products: [] };
-
-    this.carts = await this.getCarts();
+    this.carts = await this.getCarts(); //
     this.carts.push(newCart);
-
     await fs.promises.writeFile(this.PATH, JSON.stringify(this.carts));
-
     return newCart;
   };
 
@@ -26,7 +22,7 @@ export class CartManager {
       const responseParse = JSON.parse(response);
       return responseParse;
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error al leer los carritos:', error);
       return [];
     }
   };
@@ -34,44 +30,38 @@ export class CartManager {
   getCartProducts = async (id) => {
     const carts = await this.getCarts();
     const cart = carts.find((cart) => cart.id === id);
-
     if (cart) {
       return cart.products;
     } else {
-      console.log('No se encontro');
+      console.log('No se encontró el carrito');
     }
   };
   addProductToCart = async (cId, pId) => {
     const carts = await this.getCarts();
     const findIndexCart = carts.findIndex((cart) => cart.id === cId);
-
     if (findIndexCart != -1) {
       const cartProducts = await this.getCartProducts(cId);
       const findIndexProductToSave = cartProducts.findIndex(
         (product) => product.id === pId
       );
-
       if (findIndexProductToSave != -1) {
         cartProducts[findIndexProductToSave].quantity++;
       } else {
         cartProducts.push({ id: pId, quantity: 1 });
       }
-
       carts[findIndexCart].products = cartProducts;
       await fs.promises.writeFile(this.PATH, JSON.stringify(carts));
-      console.log('Agregado.');
+      console.log('producto agregado con exito');
     } else {
       throw new Error('Carrito no encontrado, producto no agregado');
     }
   };
-
   decreaseProductQuantity = async (cid, pid) => {
     try {
       const cart = await cartsModel.findById(cid);
       const productIndex = cart.products.findIndex(
         (product) => product.product == pid
       );
-
       if (productIndex !== -1) {
         if (cart.products[productIndex].quantity > 1) {
           cart.products[productIndex].quantity -= 1;
@@ -81,7 +71,6 @@ export class CartManager {
           await cart.save();
         }
       }
-
       return true;
     } catch (error) {
       console.log(error);

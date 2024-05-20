@@ -1,17 +1,18 @@
-
-<a class="mx-5 my-5 btn btn-success" href="/realtimeproducts">Tiempo real</a>
-<a href="/carrito/{{carrito._id}}"  id="inputCarrito">Ver Carrito</a>
-<input type="text" value="{{carrito._id}}"  id="inputCarrito">
-
 {{>menu}}
+<a class="mx-5 my-5 btn btn-success" href="/realtimeproducts">Tiempo real</a>
+<a href="/carrito/{{this.carrito._id}}" class="btn btn-primary"  id="inputCarrito">Ver Carrito</a>
+{{#if mensajeBienvenida}}
+    <p id="mensajeBienvenida" class="mensaje-bienvenida">{{mensajeBienvenida}}</p>
+{{/if}}
+<input type="text" value="{{this.carrito._id}}"  id="inputCarrito">
 <div class="container col-12 border border-primary">
     <h1 class="text-center mb-4 fs-1 font-monospace">Productos</h1>
-      <div class="row  row-cols-md-4 row-cols-md-5 ">
-          {{#each listOfProducts}}
-         <div class="col mb-4">
+    <div class="row  row-cols-md-4 row-cols-md-5 ">
+        {{#each listOfProducts}}
+        <div class="col mb-4">
             <div class="card h-100 bg-light">
                 <div class="card-header bg-primary text-white">
-                       <i class="bi bi-info-circle">ID: </i>{{this.id}}
+                    <i class="bi bi-info-circle">ID: </i>{{this.id}}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title text-black fs-4 font-monospace">{{this.title}}</h5>
@@ -19,7 +20,7 @@
                         <hr>
                         <li ><i class="bi bi-file-text">Descripcion: {{this.description}}</i></li>
                         <hr>
-                        <li ><i>Precio : $ {{this.price}}</i></li>
+                        <li ><i>Precio: ${{this.price}}</i></li>
                         <hr>
                         <li ><i class="bi bi-tag"></i>Codigo: {{this.code}}</li>
                         <hr>
@@ -32,30 +33,24 @@
                         <li >
                             <img src="{{this.thumbnail}}" alt="{{this.title}}" class="img-fluid mt-2">
                         </li>
-                        <button onclick="comprar('{{_id}}')">Agregar al carrito</button>
-
+                        <button onclick="comprar('{{_id}}')">Agregar</button>
                     </ul>
                 </div>
             </div>
         </div>
         {{/each}}
-      </div>
+    </div>
 </div>
-
 <br>
 <div class="d-flex justify-content-center">
 <a class="mx-5 my-5 btn btn-success" href="/?pagina=1">Pág. 1</a>
-
- {{#if hasPrevPage}}
+{{#if hasPrevPage}}
     <a class="mx-5 my-5 btn btn-success" href="/?pagina={{prevPage}}">Ant.</a>
 {{/if}}
-
 {{#if hasNextPage}}
     <a class="mx-5 my-5 btn btn-success" href="/?pagina={{nextPage}}">Sig.</a>
 {{/if}}
-
-
 <a class="mx-5 my-5 btn btn-success" href="/?pagina={{totalPages}}">Ult.Pág.</a>
-
 </div>
 <br>
+<script src="/js/productos.js"></script>

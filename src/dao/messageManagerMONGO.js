@@ -8,27 +8,24 @@ export default class MessageManager {
       return err;
     }
   };
-
   createMessage = async (m) => {
     if (m.user.trim() === '' || m.message.trim() === '') {
       return null;
     }
-
     try {
       return await messageModel.create(m);
     } catch (err) {
       return err;
     }
   };
-
   deleteMessage = async () => {
     try {
-      console.log('Borrando.');
+      console.log('borrando mensajes...');
       const result = await messageModel.deleteMany({});
-      console.log('Borrado', result);
+      console.log('mensaje borrado', result);
       return result;
     } catch (err) {
-      console.log('Error', err);
+      console.log('error al borrar mensaje', err);
       return err;
     }
   };

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ProductManagerMongo from '../dao/productManagerMONGO.js';
+import { auth } from '../middleware/auth.js';
 
 const productManager = new ProductManagerMongo();
 
@@ -29,12 +30,12 @@ router.delete('/:pid', async (req, res) => {
   res.json({ status: 'success', deleteproduct });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   let { title, ...otrasPropiedades } = req.body;
 
   if (!title) {
     res.setHeader('Content-Type', 'application/json');
-    return res.status(400).json({ error: `Titulo requerido` });
+    return res.status(400).json({ error: `titulo es requerido` });
   }
 
   let existe;
@@ -45,13 +46,14 @@ router.post('/', async (req, res) => {
     console.log(error);
     res.setHeader('Content-Type', 'application/json');
     return res.status(500).json({
-      error: `Error interno del servidor`,
+      error: `Error en el servidor`,
       detalle: `${error.message}`,
     });
   }
+
   if (existe) {
     res.setHeader('Content-Type', 'application/json');
-    return res.status(400).json({ error: `${title} ya existe` });
+    return res.status(400).json({ error: `Ya existe ${title} en BD` });
   }
 
   try {
@@ -65,7 +67,7 @@ router.post('/', async (req, res) => {
     console.log(error);
     res.setHeader('Content-Type', 'application/json');
     return res.status(500).json({
-      error: `Error interno del servidor`,
+      error: `Error en el servidor`,
       detalle: `${error.message}`,
     });
   }

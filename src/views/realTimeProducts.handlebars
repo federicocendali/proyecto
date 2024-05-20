@@ -1,11 +1,9 @@
 <div class='containerRealTime'>
-
   <a class='mx-5 my-5 btn btn-success' href='/'>Home</a>
   <form class='row g-3 mx-5' id='formProduct'>
-    <h1 class='mb-4 font-monospace'>Lista en tiempo real - Crear Producto</h1>
-
+    <h1 class='mb-4 font-monospace'>Crear Producto</h1>
     <div class='col-md-4'>
-      <label for='title' class='form-label'>Nombre del producto</label>
+      <label for='title' class='form-label'>Nombre</label>
       <div class='input-group'>
         <span class='input-group-text'><i
             class='bi bi-alphabet-uppercase'
@@ -15,12 +13,11 @@
           class='form-control'
           name='title'
           id='title'
-          placeholder='Nombre producto'
+          placeholder='Ingresar nombre'
           required
         />
       </div>
     </div>
-
     <div class='col-md-4'>
       <label for='description' class='form-label'>Descripcion</label>
       <div class='input-group'>
@@ -35,7 +32,6 @@
         />
       </div>
     </div>
-
     <div class='col-md-4'>
       <label for='stock' class='form-label'>Stock</label>
       <div class='input-group'>
@@ -50,7 +46,6 @@
         />
       </div>
     </div>
-
     <div class='col-md-4'>
       <label for='thumbnail' class='form-label'>Imagen</label>
       <div class='input-group'>
@@ -65,7 +60,6 @@
         />
       </div>
     </div>
-
     <div class='col-md-4'>
       <label for='category' class='form-label'>Categoria</label>
       <div class='input-group'>
@@ -80,7 +74,6 @@
         />
       </div>
     </div>
-
     <div class='col-md-4'>
       <label for='price' class='form-label'>Precio</label>
       <div class='input-group'>
@@ -95,7 +88,6 @@
         />
       </div>
     </div>
-
     <div class='col-md-4'>
       <div class='form-check mt-4'>
         <input
@@ -109,7 +101,6 @@
         <label class='form-check-label' for='flexCheckChecked'>Estado</label>
       </div>
     </div>
-
     <div class='col-md-4'>
       <label for='code' class='form-label'>Codigo</label>
       <div class='input-group'>
@@ -119,22 +110,19 @@
           class='form-control'
           name='code'
           id='code'
-          placeholder='Codigo producto'
+          placeholder='Codigo del producto'
           required
         />
       </div>
     </div>
-
     <div class='col-md-8 mt-4'>
       <button class='btn btn-primary' type='submit' id='add-btn'>Registrar
         producto</button>
     </div>
-
     <hr />
-
     <h4>Eliminar producto</h4>
     <div class='col-md-6'>
-      <label for='id-product' class='form-label'>ID del producto</label>
+      <label for='id-product' class='form-label'>ID</label>
       <div class='input-group'>
         <span class='input-group-text'><i class='bi bi-trash'></i></span>
         <input
@@ -142,25 +130,19 @@
           class='form-control'
           name='id-prod'
           id='id-prod'
-          placeholder='0000'
+          placeholder='Ej. 123'
         />
       </div>
     </div>
-
     <div class='col-md-6 mt-5'>
       <button class='btn btn-danger' type='button' id='delete-id-btn'>Eliminar
         producto</button>
       <button class='btn btn-warning' type='button' id='update-id-btn'>Modificar
         producto</button>
-
     </div>
     <hr />
   </form>
-
-  <div class='row mt-8' id='list-products'>
-
-  </div>
+  <div class='row mt-8' id='list-products'></div>
 </div>
-
 <script src='/socket.io/socket.io.js'></script>
 <script src='/js/realTimeProducts.js'></script>
