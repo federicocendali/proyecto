@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import ProductManagerMONGO from '../dao/productManagerMONGO.js';
 import CartManager from '../dao/cartManagerMONGO.js';
+import { auth } from '../middleware/auth.js';
 
 export const router = Router();
 
@@ -15,7 +16,11 @@ router.get('/chat', async (req, res) => {
   res.status(200).render('chat');
 });
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
+  let carrito = await cartManager.getOneBy();
+  if (!carrito) {
+    carrito = await cartManager.createCart();
+  }
   try {
     let { pagina, query, sort } = req.query;
     if (!pagina) pagina = 1;
@@ -51,6 +56,7 @@ router.get('/', async (req, res) => {
       hasNextPage,
       prevPage,
       nextPage,
+      carrito,
     });
   } catch (error) {
     console.error('Error:', error);
@@ -113,7 +119,7 @@ router.get('/paginacion', async (req, res) => {
   }
 });
 
-router.get('/carts/:cid', async (req, res) => {
+router.get('/carrito/:cid', async (req, res) => {
   let id = req.params.cid;
   let products;
   try {
@@ -149,6 +155,23 @@ router.get('/productos', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.status(200).render('productos', {
     productos,
-    carritoId: carrito._id,
+    carrito,
+  });
+});
+
+router.get('/register', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).render('register');
+});
+
+router.get('/login', (req, res) => {
+  let { error } = req.query;
+  res.status(200).render('login', { error });
+});
+
+router.get('/profile', auth, (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).render('profile', {
+    usuario: req.session.usuario,
   });
 });

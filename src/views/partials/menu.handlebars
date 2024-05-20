@@ -1,0 +1,26 @@
+<div class='container'>
+  <ul class='nav'>
+    <li class='nav-item'>
+      <a class='nav-link' href='/'>Home Page</a>
+    </li>
+    <li class='nav-item'>
+      <a class='nav-link' href='/register'>Registro</a>
+    </li>
+    <li class='nav-item'>
+      <a class='nav-link' href='/login'>Login</a>
+    </li>
+    <li class='nav-item'>
+      <a class='nav-link' href='/profile'>Perfil</a>
+    </li>
+    <li class='nav-item'>
+      <a class='nav-link' href='/api/sessions/logout' id='logoutBtn'>Logout</a>
+    </li>
+  </ul>
+</div>
+<script>
+  document.getElementById('logoutButton').addEventListener('click', function() {
+  if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+  fetch('http://localhost:8080/api/sessions/logout', { method: 'POST', })
+  .then(response => { window.location.href = '/login'; }) .catch(error => {
+  console.error('Error al cerrar sesión:', error); }); } else {} });
+</script>

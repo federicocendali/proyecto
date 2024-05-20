@@ -1,7 +1,8 @@
 <h2>Productos</h2>
 <hr />
 <a class='mx-5 my-5 btn btn-success' href='/realtimeproducts'>Tiempo real</a>
-<input type='text' value='{{carritoId}}' id='inputCarrito' />
+<input type='text' value='{{carrito._id}}' id='inputCarrito' />
+<a href='/carrito/{{carrito._id}}' class='bg-warning'>Ver carrito</a>
 {{#each productos}}
   <div class='product-card'>
     <ul class='list-unstyled'>
@@ -29,8 +30,7 @@
       <button onclick="comprar('{{_id}}')">Agregar</button>
     </ul>
   </div>
+  <a href='/carrito/{{carrito._id}}'>Ver Carrito</a>
 {{/each}}
 <br />
-<br />
-<a href=''>Ver Carrito</a>
 <script src='/js/productos.js'></script>
