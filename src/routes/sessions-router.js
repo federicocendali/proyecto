@@ -28,6 +28,7 @@ router.post(
   async (req, res) => {
     let { web } = req.body;
     let usuario = { ...req.user };
+    console.log(req.user);
     delete usuario.password;
     req.session.usuario = usuario;
     if (web) {

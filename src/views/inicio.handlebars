@@ -1,10 +1,9 @@
 {{>menu}}
-<a class="mx-5 my-5 btn btn-success" href="/realtimeproducts">Tiempo real</a>
-<a href="/carrito/{{this.carrito._id}}" class="btn btn-primary"  id="inputCarrito">Ver Carrito</a>
+<input type="text" value="{{this.carrito._id}}"  id="inputCarrito" hidden>
+<a href="/carrito/{{carrito._id}}" class="btn btn-warning mx-3 my-3">Ver carrito</a>
 {{#if mensajeBienvenida}}
     <p id="mensajeBienvenida" class="mensaje-bienvenida">{{mensajeBienvenida}}</p>
 {{/if}}
-<input type="text" value="{{this.carrito._id}}"  id="inputCarrito">
 <div class="container col-12 border border-primary">
     <h1 class="text-center mb-4 fs-1 font-monospace">Productos</h1>
     <div class="row  row-cols-md-4 row-cols-md-5 ">
@@ -33,7 +32,7 @@
                         <li >
                             <img src="{{this.thumbnail}}" alt="{{this.title}}" class="img-fluid mt-2">
                         </li>
-                        <button onclick="comprar('{{_id}}')">Agregar</button>
+                        <button onclick="comprar('{{this._id}}')">Agregar</button>
                     </ul>
                 </div>
             </div>

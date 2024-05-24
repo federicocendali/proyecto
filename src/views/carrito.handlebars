@@ -1,13 +1,14 @@
 {{>menu}}
-<a class="mx-5 my-5 btn btn-success" href="/">Inicio</a>
-    <h2>Carrito numero: {{carrito._id}}</h2>
+<a class="mx-5 my-5 btn btn-success border-warning" href="/">Inicio</a>
+<a href="/productos" class="btn btn-success flex flex-center m-5 border-warning">Seguir comprando</a>
+    <h2 class="text-center">Carrito del cliente {{this.carrito._id}}</h2>
 <div class="container col-12 border border-primary">
     <div class="row  row-cols-md-4 row-cols-md-5 ">
         {{#each products}}
         <div class="col mb-4">
             <div class="card h-100 bg-light">
                 <div class="card-header bg-primary text-white">
-                    <i class="bi bi-info-circle">ID: </i>{{this.product.id}}
+                    <i class="bi bi-info-circle">ID: </i>{{this.product._id}}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title text-black fs-4 font-monospace">{{this.product.title}}</h5>
@@ -28,6 +29,7 @@
                         <li >
                             <img src="{{this.product.thumbnail}}" alt="{{this.product.title}}" class="img-fluid mt-2">
                         </li>
+                        <button class="btn btn-danger mx-3 mt-5">Eliminar</button>
                     </ul>
                 </div>
             </div>
@@ -35,4 +37,3 @@
         {{/each}}
     </div>
 </div>
-<a href="/productos">Seguir Comprando</a>

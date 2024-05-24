@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import CartManager from '../dao/cartManagerMONGO.js';
-import ProductManager from '../dao/productManagerMONGO.js';
+import CartManager from '../controllers/cartController.js';
+import ProductManager from '../controllers/productController.js';
 import { isValidObjectId } from 'mongoose';
 import { auth } from '../middleware/auth.js';
 
