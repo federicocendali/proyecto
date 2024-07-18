@@ -1,7 +1,6 @@
 <div class="d-flex justify-content-evenly">
 {{>menu}}
 </div>
-<hr>
 <form action="/api/sessions/login" method="post">
     {{#if error}}
         <div style="font-weight: bolder; color: red;">{{error}}</div>
@@ -9,21 +8,21 @@
 {{#if mensaje}}
         <div style="font-weight: bolder; color: blue;">{{mensaje}}</div>
     {{/if}}
-<div class="container mt-5">
+<div>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <form>
                     <div class="form-group m-3" >
-                        <label for="email" class="fs-4">Correo</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Correo">
+                        <label for="email" class="fs-4">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico">
                     </div>
                     <div class="form-group  m-3">
                         <label for="password" class="fs-4">Contraseña</label>
-                        <input type="password" class="form-control" name="password" placeholder="Contraseña">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="contraseña">
                     </div>
                     <input type="text" name="web" value="web" hidden>
                     <div class="d-flex justify-content-around m-5">
-                        <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+                        <button type="submit" class="btn btn-primary" id="btnSubmit">Iniciar Sesion</button>
                         <a class="btn btn-primary" href="/api/sessions/github">Acceder con GitHub</a>
                     </div>
                 </form>

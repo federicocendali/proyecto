@@ -1,39 +1,54 @@
-{{>menu}}
-<a class="mx-5 my-5 btn btn-success border-warning" href="/">Inicio</a>
-<a href="/productos" class="btn btn-success flex flex-center m-5 border-warning">Seguir comprando</a>
-    <h2 class="text-center">Carrito del cliente {{this.carrito._id}}</h2>
-<div class="container col-12 border border-primary">
-    <div class="row  row-cols-md-4 row-cols-md-5 ">
-        {{#each products}}
-        <div class="col mb-4">
-            <div class="card h-100 bg-light">
-                <div class="card-header bg-primary text-white">
-                    <i class="bi bi-info-circle">ID: </i>{{this.product._id}}
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title text-black fs-4 font-monospace">{{this.product.title}}</h5>
-                    <ul class="list-unstyled">
-                        <hr>
-                        <li ><i class="bi bi-file-text">Descripcion: {{this.product.description}}</i></li>
-                        <hr>
-                        <li ><i>Precio: ${{this.product.price}}</i></li>
-                        <hr>
-                        <li ><i class="bi bi-tag"></i>Codigo: {{this.product.code}}</li>
-                        <hr>
-                        <li ><i class="bi bi-grid"></i>Categoria: {{this.product.category}}</li>
-                        <hr>
-                        <li ><i class="bi bi-check-circle">Estado: {{this.product.status}}</i></li>
-                        <hr>
-                        <li ><i class="bi bi-box"></i>Stock: {{this.quantity}}</li>
-                        <hr>
-                        <li >
-                            <img src="{{this.product.thumbnail}}" alt="{{this.product.title}}" class="img-fluid mt-2">
-                        </li>
-                        <button class="btn btn-danger mx-3 mt-5">Eliminar</button>
-                    </ul>
-                </div>
-            </div>
+<h2 class='text-center'>Carrito {{carrito._id}}</h2>
+<a href='/' class='btn btn-success flex flex-center m-5 border-warning'>Seguir
+  Comprando</a>
+<input type='hidden' value='{{this.carrito._id}}' id='inputCarrito' />
+<div class='container bg-light border border-dark'>
+  <div class='row row-cols-md-4 row-cols-md-6 m-5 mt-4'>
+    {{#each products}}
+      <div class='col mb-4 mt-3'>
+        <div class='card h-90 bg-light'>
+          <div class='card-header bg-secondary text-white'>
+            <i class='bi bi-info-circle'></i>
+            ID:
+            {{this.product._id}}
+          </div>
+          <div class='card-body'>
+            <h5
+              class='card-title text-black fs-4 font-monospace'
+            >{{this.product.title}}</h5>
+            <ul class='list-unstyled'>
+              <li><i class='bi bi-file-text'></i>
+                Descripción:
+                {{this.product.description}}</li>
+              <li>Precio: $ {{this.product.price}}</li>
+              <li><i class='bi bi-tag'></i> Código: {{this.product.code}}</li>
+              <li><i class='bi bi-grid'></i>
+                Categoría:
+                {{this.product.category}}</li>
+              <li><i class='bi bi-check-circle'></i>
+                Estado:
+                {{this.product.status}}</li>
+              <li><i class='bi bi-box'></i> Stock: {{this.quantity}}</li>
+              <li>
+                <img
+                  src='{{this.product.thumbnail}}'
+                  alt='{{this.product.title}}'
+                  class='img-fluid mt-2'
+                />
+              </li>
+            </ul>
+            <button
+              class='btn btn-danger mx-4'
+              onclick="eliminar('{{this.carrito._id}}', '{{this.product._id}}')"
+            >Eliminar</button>
+          </div>
         </div>
-        {{/each}}
-    </div>
+      </div>
+    {{/each}}
+  </div>
+  <a
+    onclick='finalizarCompra()'
+    class='btn btn-success flex flex-center mx-5 my-2 border-warning'
+  >Finalizar compra</a>
 </div>
+<script src='/js/productos.js'></script>

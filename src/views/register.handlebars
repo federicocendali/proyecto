@@ -5,16 +5,24 @@
         <div style="font-weight: bolder; color: red;">{{error}}</div>
     {{/if}}
 <form action="/api/sessions/register" method="post">
-<div class="container mt-5">
+<div>
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <form>
-                     <div class="form-group m-3" >
+                    <div class="form-group m-3" >
                         <label for="email" class="fs-4">Nombre</label>
-                       <input type="text" name="nombre" class="form-control" placeholder="nombre">
+                    <input type="text" name="first_name" class="form-control" placeholder="nombre">
                     </div>
                     <div class="form-group m-3" >
-                        <label for="email" class="fs-4">Correo</label>
+                        <label for="email" class="fs-4">Apellido</label>
+                    <input type="text" name="last_name" class="form-control" placeholder="nombre">
+                    </div>
+                    <div class="form-group m-3" >
+                        <label for="email" class="fs-4">Edad</label>
+                    <input type="text" name="age" class="form-control" placeholder="nombre">
+                    </div>
+                    <div class="form-group m-3" >
+                        <label for="email" class="fs-4">Correo Electrónico</label>
                         <input type="email" name="email" class="form-control" placeholder="correo electrónico">
                     </div>
                     <div class="form-group  m-3">
@@ -22,11 +30,8 @@
                         <input type="password" name="password" class="form-control" placeholder="contraseña">
                     </div>
                     <input type="text" name="web" value="web" hidden>
-
-
                     <div class="d-flex justify-content-around m-5">
-                        <button type="submit" class="btn btn-primary">Registrar</button>
-
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
                     </div>
                 </form>
             </div>

@@ -1,6 +1,6 @@
 import { usuarioModelo } from '../dao/models/usuarioModelo.js';
 
-export class UsersController {
+export class UsersManager {
   async create(usuario) {
     let nuevoUsuario = await usuarioModelo.create(usuario);
     return nuevoUsuario.toJSON();

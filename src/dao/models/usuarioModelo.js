@@ -1,28 +1,13 @@
 import mongoose from 'mongoose';
 
-export const usuarioModelo = mongoose.model(
-  'Users',
-  new mongoose.Schema(
-    {
-      nombre: String,
-      email: {
-        type: String,
-        unique: true,
-      },
-      password: String,
-      rol: {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
-      },
-      carrito: {
-        type: mongoose.Types.ObjectId,
-        ref: 'carts',
-      },
-    },
-    {
-      timestamps: true,
-      strict: false,
-    }
-  )
-);
+const userSchema = new mongoose.Schema({
+  first_name: { type: String, required: true },
+  last_name: { type: String },
+  email: { type: String, required: true, unique: true },
+  age: { type: Number },
+  password: { type: String },
+  carrito: { type: mongoose.Schema.Types.ObjectId, ref: 'carts' },
+  role: { type: String, default: 'user' },
+});
+
+export const usuarioModelo = mongoose.model('users', userSchema);

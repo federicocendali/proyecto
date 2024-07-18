@@ -1,55 +1,42 @@
 {{>menu}}
-<input type="text" value="{{this.carrito._id}}"  id="inputCarrito" hidden>
-<a href="/carrito/{{carrito._id}}" class="btn btn-warning mx-3 my-3">Ver carrito</a>
-{{#if mensajeBienvenida}}
-    <p id="mensajeBienvenida" class="mensaje-bienvenida">{{mensajeBienvenida}}</p>
-{{/if}}
-<div class="container col-12 border border-primary">
-    <h1 class="text-center mb-4 fs-1 font-monospace">Productos</h1>
-    <div class="row  row-cols-md-4 row-cols-md-5 ">
+<input type="hidden" value="{{this.carrito._id}}" id="inputCarrito">
+<div>
+    <h3>Productos</h3>
+    <div class="d-flex justify-content-around">
+    </div>
+    <div class="row row-cols-md-4 row-cols-md-5">
         {{#each listOfProducts}}
         <div class="col mb-4">
-            <div class="card h-100 bg-light">
-                <div class="card-header bg-primary text-white">
-                    <i class="bi bi-info-circle">ID: </i>{{this.id}}
+            <div class="card h-100">
+                <div class="card-header">
+                        <img src="{{this.thumbnail}}" alt="{{this.title}}" class="img-fluid">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title text-black fs-4 font-monospace">{{this.title}}</h5>
-                    <ul class="list-unstyled">
-                        <hr>
-                        <li ><i class="bi bi-file-text">Descripcion: {{this.description}}</i></li>
-                        <hr>
-                        <li ><i>Precio: ${{this.price}}</i></li>
-                        <hr>
-                        <li ><i class="bi bi-tag"></i>Codigo: {{this.code}}</li>
-                        <hr>
-                        <li ><i class="bi bi-grid"></i>Categoria: {{this.category}}</li>
-                        <hr>
-                        <li ><i class="bi bi-check-circle">Estado: {{this.status}}</i></li>
-                        <hr>
-                        <li ><i class="bi bi-box"></i>Stock: {{this.stock}}</li>
-                        <hr>
-                        <li >
-                            <img src="{{this.thumbnail}}" alt="{{this.title}}" class="img-fluid mt-2">
-                        </li>
-                        <button onclick="comprar('{{this._id}}')">Agregar</button>
+                    <h5 class="card-title text-dark fs-4">{{this.title}}</h5>
+                    <ul>
+                        <li><i class="bi bi-file-text"></i> Descripción: {{this.description}}</li>
+                        <li>Precio: $ {{this.price}}</li>
+                        <li><i class="bi bi-tag"></i> Código: {{this.code}}</li>
+                        <li><i class="bi bi-grid"></i> Categoría: {{this.category}}</li>
+                        <li><i class="bi bi-check-circle"></i> Estado: {{this.status}}</li>
+                        <li><i class="bi bi-box"></i> Stock: {{this.stock}}</li>
+                ID:{{this.id}}
                     </ul>
+                    <button onclick="comprar('{{this._id}}')">Agregar a Carrito</button>
                 </div>
             </div>
         </div>
         {{/each}}
     </div>
 </div>
-<br>
-<div class="d-flex justify-content-center">
-<a class="mx-5 my-5 btn btn-success" href="/?pagina=1">Pág. 1</a>
-{{#if hasPrevPage}}
-    <a class="mx-5 my-5 btn btn-success" href="/?pagina={{prevPage}}">Ant.</a>
-{{/if}}
-{{#if hasNextPage}}
-    <a class="mx-5 my-5 btn btn-success" href="/?pagina={{nextPage}}">Sig.</a>
-{{/if}}
-<a class="mx-5 my-5 btn btn-success" href="/?pagina={{totalPages}}">Ult.Pág.</a>
+<div class="d-flex justify-content-center my-2">
+    <a href="/?pagina=1" class="btn btn-primary mx-1">Pág. 1</a>
+    {{#if hasPrevPage}}
+    <a href="/?pagina={{prevPage}}" class="btn btn-outline-secondary mx-1">Ant.</a>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/?pagina={{nextPage}}" class="btn btn-outline-secondary mx-1">Sig.</a>
+    {{/if}}
+    <a href="/?pagina={{totalPages}}" class="btn btn-primary mx-1">Ult.Pág.</a>
 </div>
-<br>
 <script src="/js/productos.js"></script>

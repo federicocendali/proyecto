@@ -7,24 +7,24 @@
 {{#each productos}}
 <div class="product-card">
     <ul class="list-unstyled">
-        <li><i class="bi bi-file-text">Titulo: {{title}}</i></li>
+        <li><i class="bi bi-file-text"> Titulo : {{title}}</i></li>
         <hr>
-        <li><i class="bi bi-file-text">Descripcion: {{description}}</i></li>
+        <li><i class="bi bi-file-text"> Descripcion : {{description}}</i></li>
         <hr>
-        <li><i>Precio: ${{this.price}}</i></li>
+        <li><i>Precio : $ {{this.price}}</i></li>
         <hr>
-        <li><i class="bi bi-tag"></i>Codigo: {{this.code}}</li>
+        <li><i class="bi bi-tag"></i> Codigo: {{this.code}}</li>
         <hr>
-        <li><i class="bi bi-grid"></i>Categoria: {{this.category}}</li>
+        <li><i class="bi bi-grid"></i> Categoria : {{this.category}}</li>
         <hr>
-        <li><i class="bi bi-check-circle">Estado: {{this.status}}</i></li>
+        <li><i class="bi bi-check-circle"> Estado : {{this.status}}</i></li>
         <hr>
-        <li><i class="bi bi-box"></i>Stock: {{this.stock}}</li>
+        <li><i class="bi bi-box"></i> Stock : {{this.stock}}</li>
         <hr>
         <li>
             <img src="{{this.thumbnail}}" alt="{{this.title}}" class="img-fluid mt-2">
         </li>
-        <button onclick="comprar('{{this._id}}')">Agregar</button>
+        <button onclick="comprar('{{this._id}}')">Agregar a Carrito</button>
     </ul>
 </div>
 {{/each}}

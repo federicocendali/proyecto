@@ -1,87 +1,142 @@
-import { productsModel } from '../dao/models/products.model.js';
+import { productService } from '../services/ProductService.js';
+import { isValidObjectId, CustomError } from '../utils.js';
+import { TIPOS_ERROR } from '../utils/EnumeraErrores.js';
+import {
+  argumentosRepetidosProduct,
+  productoExistente,
+  tituloObligatorioProduct,
+} from '../utils/erroresProducts.js';
+import { logger } from '../helper/Logger.js';
+import { faker } from '@faker-js/faker';
 
-export default class ProductManager {
-  getProducts = async () => {
+export class ProductController {
+  static getProduct = async (req, res) => {
     try {
-      return await productsModel.find().lean();
-    } catch (err) {
-      return err;
+      const products = await productService.getProducts();
+      res.json({ products });
+    } catch (error) {
+      logger.error(`Error al intentar obtener productos: ${error.message}`);
+      res.status(500).json({ error: `Error al intentar obtener productos` });
     }
   };
-  getProductsView = async () => {
+
+  static getProductById = async (req, res) => {
+    const { pid } = req.params;
     try {
-      return await productsModel.find().lean();
-    } catch (err) {
-      return err;
+      if (!isValidObjectId(pid)) {
+        return res.status(400).json({ error: 'ID de producto inválido' });
+      }
+      const productfind = await productService.getProductById(pid);
+      res.json({ status: 'success', productfind });
+    } catch (error) {
+      logger.error(
+        `Error al intentar obtener producto por ID: ${pid}: ${error.message}`
+      );
+      res
+        .status(500)
+        .json({ error: `Error al intentar obtener producto por ID: ${pid}` });
     }
   };
-  getProductById = async (id) => {
+
+  static updateProduct = async (req, res) => {
+    const { pid } = req.params;
     try {
-      return await productsModel.findById(id);
-    } catch (err) {
-      return { error: err.message };
-    }
-  };
-  async getOneBy(filtro = {}) {
-    return await productsModel.findOne(filtro).lean();
-  }
-  async create(product) {
-    return await productsModel.create(product);
-  }
-  addProduct = async (product) => {
-    try {
-      await productsModel.create(product);
-      return await productsModel.findOne({ title: product.title });
-    } catch (err) {
-      return err;
-    }
-  };
-  updateProduct = async (id, product) => {
-    try {
-      return await productsModel.findByIdAndUpdate(id, { $set: product });
-    } catch (err) {
-      return err;
-    }
-  };
-  deleteProductById = async (id) => {
-    try {
-      return await productsModel.deleteOne({ id });
-    } catch (err) {
-      return err;
-    }
-  };
-  async getAll() {
-    return await productsModel.find().lean();
-  }
-  async getAllPaginate(page = 1) {
-    return await productsModel.paginate({}, { limit: 5, page, lean: true });
-  }
-  async getProductsPaginate(filtro, opciones) {
-    console.log(opciones);
-    let resultado = await productsModel.paginate(filtro, opciones);
-    console.log(resultado);
-    let sortOrder = opciones.sort;
-    if (sortOrder == 'asc') {
-      return (resultado = resultado.docs.sort(function (a, b) {
-        return a.price - b.price;
-      }));
-    } else if (sortOrder == 'desc') {
-      return (resultado = resultado.docs.sort(function (a, b) {
-        return b.price - a.price;
-      }));
-    } else {
-      return (resultado = {
-        status: 'success',
-        payload: resultado.docs,
-        totalPages: resultado.totalPages,
-        prevPage: resultado.prevPage,
-        nextPage: resultado.nextPage,
-        page: resultado.page,
-        hasPrevPage: resultado.hasPrevPage,
-        hasNextPage: resultado.hasNextPage,
-        prevLink: 'En construccion',
-        nextLink: 'En construccion',
+      if (!isValidObjectId(pid)) {
+        return res.status(400).json({ error: 'ID de producto inválido' });
+      }
+      const updatedproduct = await productService.updateProduct(pid, req.body);
+      res.json({ status: 'success', updatedproduct });
+    } catch (error) {
+      logger.error(
+        `Error al intentar actualizar producto con ID: ${pid}: ${error.message}`
+      );
+      res.status(500).json({
+        error: `Error al intentar actualizar producto con ID: ${pid}`,
       });
     }
-  }
+  };
+
+  static deleteById = async (req, res) => {
+    const { pid } = req.params;
+    try {
+      if (!isValidObjectId(pid)) {
+        return res.status(400).json({ error: 'ID de producto inválido' });
+      }
+      const deleteproduct = await productService.deleteProductById(pid);
+      res.json({ status: 'success', deleteproduct });
+    } catch (error) {
+      logger.error(
+        `Error al intentar eliminar producto con ID: ${pid}: ${error.message}`
+      );
+      res
+        .status(500)
+        .json({ error: `Error al intentar eliminar producto con ID: ${pid}` });
+    }
+  };
+
+  static addProduct = async (req, res) => {
+    let { title, ...otrasPropiedades } = req.body;
+    if (!title) {
+      CustomError.createError(
+        'Argumento nombre faltante',
+        tituloObligatorioProduct(req.body),
+        TIPOS_ERROR.ARGUMENTOS_INVALIDOS
+      );
+    }
+    let existe;
+    try {
+      existe = await productService.getOneBy({ title });
+    } catch (error) {
+      logger.error(
+        `Error al intentar buscar producto por título: ${title}: ${error.message}`
+      );
+      res.setHeader('Content-Type', 'application/json');
+      return res.status(500).json({
+        error: `Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+        detalle: `${error.message}`,
+      });
+    }
+    if (existe) {
+      CustomError.createError(
+        'Error',
+        productoExistente(req.body),
+        'Ya hay un producto igual',
+        TIPOS_ERROR.CONFLICT
+      );
+    }
+    try {
+      let newProduct = await productService.create({
+        title,
+        ...otrasPropiedades,
+      });
+      res.setHeader('Content-Type', 'application/json');
+      return res.status(201).json({ newProduct });
+    } catch (error) {
+      logger.error(`Error al intentar crear nuevo producto: ${error.message}`);
+      CustomError.createError(
+        'Se repite info',
+        argumentosRepetidosProduct(req.body),
+        TIPOS_ERROR.ARGUMENTOS_INVALIDOS
+      );
+    }
+  };
+
+  static mockProducts = async (req, res) => {
+    logger.info('Iniciando generación de productos simulados');
+    const mockProducts = [];
+    for (let i = 0; i < 100; i++) {
+      mockProducts.push({
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: parseFloat(faker.commerce.price()),
+        stock: faker.string.numeric(3),
+        thumbnail: faker.image.imageUrl(),
+        code: faker.random.alphaNumeric(10),
+        category: faker.commerce.department(),
+        status: faker.datatype.boolean(),
+      });
+    }
+    res.setHeader('Content-Type', 'application/json');
+    return res.status(200).json({ status: 'success', products: mockProducts });
+  };
 }

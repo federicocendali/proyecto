@@ -1,10 +1,10 @@
 {{>menu}}
-<h2 class="text-black  text-center m-4">Usuario {{usuario.nombre}}</h2>
-<div class="container d-flex justify-content-center">
+<h2 class="text-black  text-center m-4">Datos del Usuario :  {{usuario.first_name}}</h2>
+<div class="d-flex justify-content-center fw-bolder bg-light">
    <hr>
-   <h3 class="text-primary m-3">Datos usuario:</h3>
-   <p class="text-primary m-4">Nombre: <strong class="text-white m-4">{{usuario.nombre}}</strong></p>
-   <p class="text-primary m-4">Correo electrónico: <strong class="text-white m-4">{{usuario.email}}</strong></p>
-   <p class="text-primary m-4">Numero de Carrito: <strong class="text-white m-4">{{usuario.carrito._id}}</strong></p>
+   <p class=" text-secondary m-4">Nombre: <strong class="text-dark m-4">{{usuario.first_name}}</strong></p>
+   <p class=" text-secondary m-4">Correo electrónico: <strong class="text-dark m-4">{{usuario.email}}</strong></p>
+   <p class=" text-secondary m-4">Numero de Carrito: <strong class="text-dark m-4">{{usuario.carrito._id}}</strong></p>
+   <p class=" text-secondary m-4">Perfil usuario : <strong class="text-dark m-4">{{usuario.role}}</strong></p>
    <br>
 </div>

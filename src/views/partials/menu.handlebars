@@ -2,15 +2,24 @@
   <div class='container-fluid'>
     <div class='collapse navbar-collapse' id='navbarSupportedContent'>
       <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
-        <li class='nav-item'>
-          <a class='nav-link fw-bold' aria-current='page' href='/'>Home</a>
-        </li>
         {{#if login}}
           <li class='nav-item'>
-            <a class='nav-link fw-bold' href='/profile'>Perfil</a>
+            <a href='/realTimeproducts' class='btn btn-success mx-2'>Registrar
+              un producto</a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link fw-bold' href='/productos'>Ir a productos</a>
+            <a href='/carrito/{{this.carrito._id}}' class='btn btn-warning'>Ver
+              carrito</a>
+          </li>
+        {{/if}}
+      </ul>
+      <ul class='navbar-nav ms-auto mb-2 mb-lg-0'>
+        {{#if login}}
+          <li class='nav-item'>
+            <a class='nav-link fw-bold' aria-current='page' href='/'>Home</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link fw-bold' href='/profile'>Perfil</a>
           </li>
           <li class='nav-item'>
             <a
@@ -31,10 +40,4 @@
     </div>
   </div>
 </nav>
-<script>
-  document.getElementById('logoutBtn').addEventListener('click', function() { if
-  (confirm('Estas seguro de cerrar sesion?')) {
-  fetch('http://localhost:8080/api/sessions/logout', { method: 'POST', })
-  .then(response => { window.location.href = '/'; }) .catch(error => {
-  console.error('Error al cerrar sesión:', error); }); } });
-</script>
+<script src='/js/productos.js'></script>

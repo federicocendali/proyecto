@@ -1,0 +1,27 @@
+<a href='/' class='btn btn-success flex flex-center m-5 border-warning'>Seguir
+  Comprando</a>
+<h2 class='text-center'>Carrito del cliente {{carrito._id}} </h2>
+<input type='text' value='{{this.carrito._id}}' id='inputCarrito' hidden />
+<div class='container bg-secondary bg-gradient'>
+  <div class='row row-cols-md-4 row-cols-md-6 m-5 mt-4'>
+    {{#each products}}
+      <body>
+        <h1>Gracias por tu compra, {{ticket.purchaser}}</h1>
+        <h2>Detalles del Ticket</h2>
+        <p><strong>Fecha de compra:</strong> {{ticket.purchase_datetime}}</p>
+        <p><strong>Total:</strong> ${{ticket.amount}}</p>
+        <h3>Productos</h3>
+        <ul>
+          {{#each ticket.products}}
+            <li>
+              <p><strong>Producto:</strong> {{this.product}}</p>
+              <p><strong>Cantidad:</strong> {{this.quantity}}</p>
+            </li>
+          {{/each}}
+        </ul>
+        <a href='/' class='btn btn-primary'>Volver al inicio</a>
+      </body>
+    {{/each}}
+  </div>
+</div>
+<script src='/js/productos.js'></script>
