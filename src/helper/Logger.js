@@ -11,20 +11,20 @@ let nivelesErrores = {
   debug: 5,
 };
 
+winston.addColors({
+  fatal: 'bold white redBG',
+  error: 'bold white redBG',
+  warn: 'bold white yellowBG',
+  info: 'bold black greenBG',
+  http: 'bold white greenBG',
+  debug: 'bold white yellowBG',
+});
+
 const transporteDesarrollo = new winston.transports.Console({
   level: 'debug',
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.colorize({
-      colors: {
-        fatal: 'bold white redBG',
-        error: 'bold white redBG',
-        warn: 'bold white yellowBG',
-        info: 'bold white greenBG',
-        http: 'bold white greenBG',
-        debug: 'bold white yellowBG',
-      },
-    }),
+    winston.format.colorize(),
     winston.format.simple()
   ),
 });
@@ -39,7 +39,7 @@ const transporteProduccion = new winston.transports.File({
 });
 
 export const logger = winston.createLogger({
-  level: nivelesErrores,
+  levels: nivelesErrores,
   transports: [transporteProduccion],
 });
 

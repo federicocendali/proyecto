@@ -8,7 +8,6 @@ import { router as cartRouter } from './router/cart-router.js';
 import { router as vistasRouter } from './router/vistas.router.js';
 import { router as sessionsRouter } from './router/sessions-router.js';
 import { router as errorRouter } from './router/error-router.js';
-
 import socketChat from './socket/socketChat.js';
 import socketProducts from './socket/socketProducts.js';
 import { Server } from 'socket.io';
@@ -27,10 +26,10 @@ const app = express();
 const port = configVarEntorno.PORT;
 
 app.use(express.json());
+app.use(middLogger);
 app.use(compression({}));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('CoderBack'));
-app.use(middLogger);
 
 initPassport();
 app.use(passport.initialize());

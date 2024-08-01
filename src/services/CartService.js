@@ -25,8 +25,8 @@ class CartService {
   deleteCartById = async (id) => {
     return this.dao.deleteCartById(id);
   };
-  deleteCartById = async (cid, pid) => {
-    return this.dao.deleteCartById(cid, pid);
+  deleteProductByCart = async (cid, pid) => {
+    return this.dao.deleteProductByCart(cid, pid);
   };
   decreaseProductQuantity = async (cid, pid) => {
     return this.dao.decreaseProductQuantity(cid, pid);
