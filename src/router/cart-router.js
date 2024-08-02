@@ -7,7 +7,7 @@ export const router = Router();
 router.get('/', CartController.getAll);
 router.get('/:cid', CartController.getById);
 router.post('/', CartController.createNewCart);
-router.post('/:cid/products/:pid', CartController.addProductToCart);
+router.post('/:cid/products/:pid', authToken, CartController.addProductToCart);
 router.delete('/:cid/products/:pid', CartController.deleteProductByCart);
 router.delete('/:cid', CartController.deleteCartById);
 router.put('/:cId/products/:pId', CartController.updateProduct);

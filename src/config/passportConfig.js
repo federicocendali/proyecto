@@ -28,7 +28,7 @@ export const initPassport = () => {
       },
       async (usuarioToken, done) => {
         try {
-          if (usuarioToken.email === ' ' || usuarioToken.password === ' ') {
+          if (!usuarioToken.email === ' ' || !usuarioToken.password === ' ') {
             logger.warn('Email y Password son obligatorios en el token JWT.');
             return done(null, false, {
               message: 'Email y Password son obligatorios',
@@ -105,6 +105,9 @@ export const initPassport = () => {
             logger.warn(`Usuario ${username} no encontrado`);
             return done(null, false);
           }
+          logger.info(
+            `Usuario encontrado: ${username}, password almacenada: ${usuario.password}`
+          );
           if (!validaPassword(password, usuario.password)) {
             logger.warn(`Contraseña incorrecta para el usuario ${username}`);
             return done(null, false);

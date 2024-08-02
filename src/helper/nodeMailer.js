@@ -48,22 +48,11 @@ export const sendTicketDeCompraEmail = async (to, code, amount) => {
   }
 };
 
-export const botonRecupero = async (to, resetLink) => {
-  const mailOptions = {
-    from: 'Federico <federicocendali@gmail.com>',
-    to: to,
-    subject: 'Recupero de contrasena',
-    html: `
-          <h2>Hola, gracias por contactarte con nosotros</h2>
-          <p>Para restablecer tu contraseña, haz clic en el botón a continuación:</p>
-          <a href="${resetLink}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border-radius: 5px;">Restablecer Contraseña</a>
-      `,
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent: ' + info.response);
-  } catch (error) {
-    console.error('Error sending email:', error);
-  }
+export const enviarEmail = async (para, asunto, mensaje) => {
+  return await transporter.sendMail({
+    from: 'federicocendali@gmail.com',
+    to: para,
+    subject: asunto,
+    html: mensaje,
+  });
 };

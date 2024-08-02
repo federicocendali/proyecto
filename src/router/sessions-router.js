@@ -9,21 +9,26 @@ dotenv.config();
 export const router = Router();
 
 router.post('/register', (req, res, next) => {
+  console.log('Solicitud de registro recibida:', req.body);
   passport.authenticate(
     'register',
     { session: false, failureRedirect: '/api/sessions/error' },
     async (err, usuario) => {
       try {
         if (err) {
+          console.error('Error en la autenticación:', err);
           return next(err);
         }
         if (!usuario) {
+          console.log('Autenticación fallida, usuario no encontrado.');
           return res.redirect('/api/sessions/error');
         }
         const { first_name, password, last_name } = req.body;
         await sendEmail(first_name, password, last_name);
+        console.log('Usuario registrado con éxito:', usuario);
         res.redirect('/login');
       } catch (error) {
+        console.error('Error al registrar el usuario:', error);
         next(error);
       }
     }
@@ -46,7 +51,7 @@ router.post(
       });
       res.cookie('CookiePrueba', token, { httpOnly: true });
       if (web) {
-        res.redirect('/');
+        return res.redirect('/');
       } else {
         res.setHeader('Content-Type', 'application/json');
         return res
@@ -115,6 +120,18 @@ router.get(
       let usuario = new UsuariosDTO(req.user);
       res.setHeader('Content-Type', 'application/json');
       res.status(200).json({ usuario });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  '/restablecerContraseña',
+  passport.authenticate('restablecerContraseña'),
+  async (req, res, next) => {
+    try {
+      res.redirect('/login?mensaje=Contraseña+restablecida+correctamente');
     } catch (error) {
       next(error);
     }

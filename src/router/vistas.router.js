@@ -3,7 +3,8 @@ import productController from '../dao/productManager.js';
 import { CartManager } from '../dao/cartManager.js';
 import { authTokenPermisos } from '../middleware/auth.js';
 import passport from 'passport';
-import { passportCall } from '../utils.js';
+import jwt from 'jsonwebtoken';
+import { passportCall, SECRET } from '../utils.js';
 import { logger } from '../helper/Logger.js';
 export const router = Router();
 
@@ -12,8 +13,8 @@ const cartManager = new CartManager();
 
 router.get(
   '/realTimeproducts',
-  passportCall('current'),
-  authTokenPermisos(['admin']),
+  passport.authenticate('current', { session: false }),
+  authTokenPermisos(['admin', 'premium']),
   async (req, res) => {
     res.status(200).render('realTimeProducts');
   }
@@ -216,4 +217,34 @@ router.get('/profile', passportCall('current'), (req, res) => {
     });
     res.status(500).send('Error interno del servidor');
   }
+});
+
+router.get('/olvideClave', (req, res) => {
+  try {
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).render('login');
+  } catch (error) {
+    res.status(500).send('Error interno del servidor');
+  }
+});
+
+router.get('/crearNuevaClave/:token', async (req, res) => {
+  let token = req.params.token;
+  let decoded;
+  try {
+    decoded = jwt.verify(token, SECRET);
+    console.log('Token válido y aún en vigencia:', decoded);
+  } catch (err) {
+    console.error('Error al verificar el token:', err);
+    return res.status(400).render('login', {
+      message:
+        'Lo siento, el token expiró o es incorrecto, deberá repetir el procedimiento para restablecer la contraseña.',
+    });
+  }
+  res.setHeader('Content-Type', 'text/html');
+  res.status(200).render('corroborarNuevaClave', { token });
+});
+
+router.get('/error', (req, res) => {
+  res.status(500).render('error', { message: 'Error interno del servidor' });
 });

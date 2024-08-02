@@ -8,5 +8,5 @@ router.get('/', ProductController.getProduct);
 router.get('/mockingProducts', ProductController.mockProducts);
 router.post('/', authToken, ProductController.addProduct);
 router.get('/:pid', ProductController.getProductById);
-router.put('/:pid', ProductController.updateProduct);
-router.delete('/:pid', ProductController.deleteById);
+router.put('/:pid', authToken, ProductController.updateProduct);
+router.delete('/:pid', authToken, ProductController.deleteById);

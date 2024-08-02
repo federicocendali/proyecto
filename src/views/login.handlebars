@@ -1,34 +1,37 @@
 <div class="d-flex justify-content-evenly">
 {{>menu}}
 </div>
-<form action="/api/sessions/login" method="post">
+<div>
     {{#if error}}
         <div style="font-weight: bolder; color: red;">{{error}}</div>
     {{/if}}
-{{#if mensaje}}
+    {{#if mensaje}}
         <div style="font-weight: bolder; color: blue;">{{mensaje}}</div>
     {{/if}}
-<div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form>
-                    <div class="form-group m-3" >
-                        <label for="email" class="fs-4">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico">
-                    </div>
-                    <div class="form-group  m-3">
-                        <label for="password" class="fs-4">Contraseña</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="contraseña">
-                    </div>
-                    <input type="text" name="web" value="web" hidden>
-                    <div class="d-flex justify-content-around m-5">
-                        <button type="submit" class="btn btn-primary" id="btnSubmit">Iniciar Sesion</button>
-                        <button type="submit" class="btn btn-primary" id="btnSubmit">Recuperar Contraseña</button>
-                        <a class="btn btn-primary" href="/api/sessions/github">Acceder con GitHub</a>
-                    </div>
-                </form>
-            </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="/api/sessions/login" method="post">
+                <div class="form-group m-3">
+                    <label for="email" class="fs-4">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" required>
+                </div>
+                <div class="form-group m-3">
+                    <label for="password" class="fs-4">Contraseña</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña" required>
+                </div>
+                <input type="text" name="web" value="web" hidden>
+                <div class="d-flex justify-content-around m-5">
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">Iniciar Sesión</button>
+                    <a class="btn btn-primary" href="/api/sessions/github">Acceder con GitHub</a>
+                </div>
+            </form>
+            <form action="/api/users/restablecerClave" method="POST">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Recuperar Contraseña</button>
+            </form>
         </div>
     </div>
-</form>
-<br><br>
+</div>
